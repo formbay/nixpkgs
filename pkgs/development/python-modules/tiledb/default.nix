@@ -1,13 +1,26 @@
-buildPythonPackage rec {
-  pname = "tiledb";
-  version = "0.4.2";
+{  pkgs ? import ./pkgs.nix  }:
+with pkgs;
+let
+  python = python36;
+ 
+  tiledb  = import ./tiledb.nix { inherit pkgs; };
 
-  format = "wheel";
+in
+  python.pkgs.buildPythonPackage rec {
+    inherit python;
 
-  src = fetchPypi {
-    inherit pname version format;
-    sha256 = "bda0ef48e6a44c091399b12ab4a7e580d2dd8294c222b301f88d7d57f47ba142";
+    pname = "tiledb";
+    version = "0.4.2";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "TileDB-Inc";
+      repo = "TileDB-Py";
+      rev = "02d95460905b09765dd34de3786fdf1a8ebc1ce7";
+      sha256 = "sha256:1g9b55dk9zz10zihigq0ixh57aa0kb38f2ds7kk394vmjh4i7vhc";
   };
 
-  LC_ALL = "en_US.UTF-8";
-  checkInputs = [ glibcLocales ];
+  nativeBuildInputs = with python.pkgs; [cmake setuptools_scm numpy cython];
+  propagatedBuildInputs = with python.pkgs; [ tiledb];
+
+  doCheck = false;
+  }
