@@ -44,7 +44,7 @@ stdenv.mkDerivation {
 
   cmakeFlags = [
   "-DCATCH_INCLUDE_DIR=${catch2}"
-  "-DTILEDB_SUPERBUILD=OFF"
+#  "-DTILEDB_SUPERBUILD=OFF"
 #  "-DINCLUDE_DIR=${clang-tools}/bin"
   ];
 
