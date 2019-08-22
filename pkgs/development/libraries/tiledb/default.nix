@@ -29,24 +29,28 @@ stdenv.mkDerivation {
     sha256 = "sha256:0ky0dcv1w1jn1cjn3819aq9xyd2wg80aagf2flxmd916flgr9zjl";
   };
 
-  makeTarget = "tiledb";
-
-  outputs = ["out"];
-
-  nativeBuildInputs = [clang-tools doxygen  gtest];
-
-  buildInputs = [cmake catch2 zlib lz4 bzip2 zstd spdlog_0 tbb openssl boost libpqxx python ];
-  
-  postPatch = ''
-    rm -rf external/Catch2
-    ln -sf ${catch2.src} external/Catch2
+  preInstall = ''
+    make doc
+    make check
   '';
 
-  cmakeFlags = [
-  "-DCATCH_INCLUDE_DIR=${catch2}"
-  "-DTILEDB_SUPERBUILD=OFF"
+  makeTarget = "tiledb";
+
+  nativeBuildInputs = [clang-tools cmake doxygen  gtest];
+
+  buildInputs = [ catch2 zlib lz4 bzip2 zstd spdlog_0 tbb openssl boost libpqxx python ];
+
+  # emulate the process of pulling catch down
+  postPatch = ''
+    mkdir -p build/externals/src/ep_catch
+    ln -sf ${catch2}/include/catch2 build/externals/src/ep_catch/single_include
+  '';
+
+#  cmakeFlags = [
+#  "-DCATCH_INCLUDE_DIR=${catch2}"
+#  "-DTILEDB_SUPERBUILD=OFF"
 #  "-DINCLUDE_DIR=${clang-tools}/bin"
-  ];
+#  ];
 
   meta = with lib; {
     description = "TileDB allows you to manage the massive dense and sparse multi-dimensional array data";
