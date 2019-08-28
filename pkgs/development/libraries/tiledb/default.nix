@@ -21,12 +21,12 @@ lib
 
 stdenv.mkDerivation {
     name = "tiledb";
-    version = "1.5.1";
+    version = "1.6.2";
 
   src = fetchgit {
     url = "https://github.com/TileDB-Inc/TileDB";
-    rev = "7236bb29f2aa1ac4de489f0791e9265cb257184d";
-    sha256 = "sha256:0ky0dcv1w1jn1cjn3819aq9xyd2wg80aagf2flxmd916flgr9zjl";
+    rev = "0eb1eba7a9ff0ada0165bd61c84239bec9cf0f00";
+    sha256 = "sha256:15i8rc2w3pnjz6chraf8nznk8p4mpgi4nx88v9jrg2s3hh092drb";
   };
 
   preInstall = ''
