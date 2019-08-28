@@ -46,13 +46,6 @@ stdenv.mkDerivation {
     ln -sf ${catch2}/include/catch2 build/externals/src/ep_catch/single_include
   '';
 
-
-#  cmakeFlags = [
-#  "-DCATCH_INCLUDE_DIR=${catch2}"
-#  "-DTILEDB_SUPERBUILD=OFF"
-#  "-DINCLUDE_DIR=${clang-tools}/bin"
-#  ];
-
   meta = with lib; {
     description = "TileDB allows you to manage the massive dense and sparse multi-dimensional array data";
     homepage = https://github.com/TileDB-Inc/TileDB;
