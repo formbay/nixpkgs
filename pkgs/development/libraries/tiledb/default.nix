@@ -36,6 +36,8 @@ stdenv.mkDerivation {
 
   makeTarget = "tiledb";
 
+  installtarget = "install-tiledb";
+
   nativeBuildInputs = [clang-tools cmake doxygen  gtest];
 
   buildInputs = [ catch2 zlib lz4 bzip2 zstd spdlog_0 tbb openssl boost libpqxx python ];
