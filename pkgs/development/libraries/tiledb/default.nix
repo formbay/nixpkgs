@@ -36,7 +36,7 @@ stdenv.mkDerivation {
 
   makeTarget = "tiledb";
 
-  installtarget = "install-tiledb";
+  installTargets = "install-tiledb";
 
   nativeBuildInputs = [clang-tools cmake doxygen  gtest];
 
