@@ -6187,6 +6187,8 @@ in {
   runway-python = callPackage ../development/python-modules/runway-python { };
 
   pyprof2calltree = callPackage ../development/python-modules/pyprof2calltree { };
+
+  mapproxy = callPackage ../development/python-modules/mapproxy { };
 });
 
 in fix' (extends overrides packages)
