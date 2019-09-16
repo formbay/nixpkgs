@@ -94,7 +94,12 @@ self: super: builtins.intersectAttrs super {
   # Won't find it's header files without help.
   sfml-audio = appendConfigureFlag super.sfml-audio "--extra-include-dirs=${pkgs.openal}/include/AL";
 
-  cachix = enableSeparateBinOutput super.cachix;
+  cachix = overrideCabal (addBuildTools (enableSeparateBinOutput super.cachix) [pkgs.boost]) (drv: {
+    postPatch = (drv.postPatch or "") + ''
+      substituteInPlace cachix.cabal --replace "c++14" "c++17"
+    '';
+  });
+
   ghcid = enableSeparateBinOutput super.ghcid;
 
   hzk = overrideCabal super.hzk (drv: {
@@ -530,10 +535,6 @@ self: super: builtins.intersectAttrs super {
   LDAP = dontCheck (overrideCabal super.LDAP (drv: {
     librarySystemDepends = drv.librarySystemDepends or [] ++ [ pkgs.cyrus_sasl.dev ];
   }));
-
-  # Doctests hang only when compiling with nix.
-  # https://github.com/cdepillabout/termonad/issues/15
-  termonad = dontCheck super.termonad;
 
   # Expects z3 to be on path so we replace it with a hard
   sbv = overrideCabal super.sbv (drv: {

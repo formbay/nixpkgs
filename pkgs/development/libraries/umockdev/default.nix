@@ -3,18 +3,20 @@
 , usbutils, which, python3 }:
 
 stdenv.mkDerivation rec {
-  name = "umockdev-${version}";
+  pname = "umockdev";
   version = "0.13.1";
 
   outputs = [ "bin" "out" "dev" "doc" ];
 
   src = fetchurl {
-    url = "https://github.com/martinpitt/umockdev/releases/download/${version}/${name}.tar.xz";
+    url = "https://github.com/martinpitt/umockdev/releases/download/${version}/${pname}-${version}.tar.xz";
     sha256 = "197a169imiirgm73d9fn9234cx56agyw9d2f47h7f1d8s2d51lla";
   };
 
   patches = [
     ./fix-test-paths.patch
+    # https://github.com/NixOS/nixpkgs/commit/9960a2be9b32a6d868046c5bfa188b9a0dd66682#commitcomment-34734461
+    ./disable-failed-test.patch
     # https://github.com/martinpitt/umockdev/pull/93
     (fetchpatch {
       url = "https://github.com/abbradar/umockdev/commit/ce22f893bf50de0b32760238a3e2cfb194db89e9.patch";

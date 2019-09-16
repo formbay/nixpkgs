@@ -26,9 +26,6 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [ typing-extensions protobuf hidapi ecdsa mnemonic requests pyblake2 click construct libusb1 rlp shamir-mnemonic ];
 
-  # build requires UTF-8 locale
-  LANG = "en_US.UTF-8";
-
   checkInputs = [
     pytest
   ];
@@ -36,14 +33,14 @@ buildPythonPackage rec {
   # disable test_tx_api.py as it requires being online
   checkPhase = ''
     runHook preCheck
-    ${python.interpreter} -m pytest --pyarg trezorlib.tests.unit_tests --ignore trezorlib/tests/unit_tests/test_tx_api.py
+    ${python.interpreter} -m pytest --pyargs trezorlib.tests.unit_tests --ignore trezorlib/tests/unit_tests/test_tx_api.py
     runHook postCheck
   '';
 
-  meta = {
+  meta = with lib; {
     description = "Python library for communicating with TREZOR Bitcoin Hardware Wallet";
     homepage = "https://github.com/trezor/trezor-firmware/tree/master/python";
-    license = lib.licenses.gpl3;
-    maintainers = with lib.maintainers; [ np prusnak mmahut "1000101" ];
+    license = licenses.gpl3;
+    maintainers = with maintainers; [ np prusnak mmahut maintainers."1000101" ];
   };
 }

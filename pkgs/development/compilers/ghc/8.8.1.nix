@@ -7,6 +7,8 @@
 
 , libiconv ? null, ncurses
 
+, enableDwarf ? !stdenv.isDarwin, elfutils # for DWARF support
+
 , # GHC can be built with system libffi or a bundled one.
   libffi ? null
 
@@ -76,7 +78,8 @@ let
   libDeps = platform: stdenv.lib.optional enableTerminfo [ ncurses ]
     ++ [libffi]
     ++ stdenv.lib.optional (!enableIntegerSimple) gmp
-    ++ stdenv.lib.optional (platform.libc != "glibc" && !targetPlatform.isWindows) libiconv;
+    ++ stdenv.lib.optional (platform.libc != "glibc" && !targetPlatform.isWindows) libiconv
+    ++ stdenv.lib.optional enableDwarf elfutils;
 
   toolsForTarget = [
     pkgsBuildTarget.targetPackages.stdenv.cc
@@ -86,12 +89,12 @@ let
 
 in
 stdenv.mkDerivation (rec {
-  version = "8.8.0.20190721";
+  version = "8.8.1";
   name = "${targetPrefix}ghc-${version}";
 
   src = fetchurl {
-    url = "https://downloads.haskell.org/ghc/8.8.1-rc1/ghc-${version}-src.tar.xz";
-    sha256 = "1ih76zpxk8ay84xjyaflqc754002y8pdaainqfvb4cnhy6lpb1br";
+    url = "https://downloads.haskell.org/ghc/${version}/ghc-${version}-src.tar.xz";
+    sha256 = "06kj4fhvijinjafiy4s873n60qly323rdlz9bmc79nhlp3cq72lh";
   };
 
   enableParallelBuilding = true;
@@ -164,6 +167,8 @@ stdenv.mkDerivation (rec {
     "CONF_GCC_LINKER_OPTS_STAGE2=-fuse-ld=gold"
   ] ++ stdenv.lib.optionals (disableLargeAddressSpace) [
     "--disable-large-address-space"
+  ] ++ stdenv.lib.optional enableDwarf [
+    "--enable-dwarf-unwind"
   ];
 
   # Make sure we never relax`$PATH` and hooks support for compatability.

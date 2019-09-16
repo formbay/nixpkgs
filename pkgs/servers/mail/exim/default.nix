@@ -3,14 +3,15 @@
 , enableMySQL ? false, mysql, zlib
 , enableAuthDovecot ? false, dovecot
 , enablePAM ? false, pam
+, enableSPF ? true, libspf2
 }:
 
 stdenv.mkDerivation rec {
-  name = "exim-4.92.1";
+  name = "exim-4.92.2";
 
   src = fetchurl {
     url = "https://ftp.exim.org/pub/exim/exim4/${name}.tar.xz";
-    sha256 = "1d14vs6jdw2bm9m33w2szxpv8rppbk7hvszq9p0n9i3svmqshr1c";
+    sha256 = "0m56jsh2fzvwj4rdpcc3pkd5vsi40cjrpzalis7l1zq33m4axmq1";
   };
 
   nativeBuildInputs = [ pkgconfig ];
@@ -18,7 +19,8 @@ stdenv.mkDerivation rec {
     ++ stdenv.lib.optional enableLDAP openldap
     ++ stdenv.lib.optionals enableMySQL [ mysql.connector-c zlib ]
     ++ stdenv.lib.optional enableAuthDovecot dovecot
-    ++ stdenv.lib.optional enablePAM pam;
+    ++ stdenv.lib.optional enablePAM pam
+    ++ stdenv.lib.optional enableSPF libspf2;
 
   preBuild = ''
     sed '
@@ -63,6 +65,10 @@ stdenv.mkDerivation rec {
         s:^# \(SUPPORT_PAM\)=.*:\1=yes:
         s:^\(EXTRALIBS_EXIM\)=\(.*\):\1=\2 -lpam:
         s:^# \(EXTRALIBS_EXIM\)=.*:\1=-lpam:
+      ''}
+      ${stdenv.lib.optionalString enableSPF ''
+        s:^# \(SUPPORT_SPF\)=.*:\1=yes:
+        s:^# \(LDFLAGS += -lspf2\):\1:
       ''}
       #/^\s*#.*/d
       #/^\s*$/d

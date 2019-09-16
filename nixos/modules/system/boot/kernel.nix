@@ -36,6 +36,7 @@ in
 
     boot.kernelPackages = mkOption {
       default = pkgs.linuxPackages;
+      type = types.unspecified // { merge = mergeEqualOption; };
       apply = kernelPackages: kernelPackages.extend (self: super: {
         kernel = super.kernel.override {
           inherit randstructSeed;
@@ -260,7 +261,7 @@ in
         source = kernelModulesConf;
       };
 
-    systemd.services."systemd-modules-load" =
+    systemd.services.systemd-modules-load =
       { wantedBy = [ "multi-user.target" ];
         restartTriggers = [ kernelModulesConf ];
         serviceConfig =

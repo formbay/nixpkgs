@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitLab, rustPlatform, cmake, pkgconfig, openssl
-, darwin
+, darwin, installShellFiles
 
 , x11Support ? stdenv.isLinux || stdenv.hostPlatform.isBSD
 , xclip ? null, xsel ? null
@@ -16,18 +16,18 @@ with rustPlatform;
 
 buildRustPackage rec {
   pname = "ffsend";
-  version = "0.2.49";
+  version = "0.2.51";
 
   src = fetchFromGitLab {
     owner = "timvisee";
     repo = "ffsend";
     rev = "v${version}";
-    sha256 = "08x0kakhn75yzajxpvpdp1ml9z77i2x2k02kqcx3ssr6mbc7xnpf";
+    sha256 = "1ckzgzbv2fh5y7c5r0b9n6y2migmsrnlwdg7dybr0c82s39swr7f";
   };
 
-  cargoSha256 = "1dmkij25gj0ya1i6h5l7pkjnqvj02zvsx15hddbjn1q06pihcsjm";
+  cargoSha256 = "1x4hxar60lwimldpsi0frdlssgsb72qahn3dmb980sj6cmbq3f0b";
 
-  nativeBuildInputs = [ cmake pkgconfig ];
+  nativeBuildInputs = [ cmake pkgconfig installShellFiles ];
   buildInputs = [ openssl ]
   ++ stdenv.lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices Security AppKit ])
   ;
@@ -41,9 +41,7 @@ buildRustPackage rec {
   );
 
   postInstall = ''
-    install -Dm644 contrib/completions/_ffsend "$out/share/zsh/site-functions/_ffsend"
-    install -Dm644 contrib/completions/ffsend.bash "$out/share/bash-completion/completions/ffsend.bash"
-    install -Dm644 contrib/completions/ffsend.fish "$out/share/fish/vendor_completions.d/ffsend.fish"
+    installShellCompletion contrib/completions/ffsend.{bash,fish} --zsh contrib/completions/_ffsend
   '';
   # There's also .elv and .ps1 completion files but I don't know where to install those
 

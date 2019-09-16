@@ -1,17 +1,20 @@
 { stdenv, fetchFromGitHub, boost, cmake, curl, ruby }:
 
 stdenv.mkDerivation rec {
-  name = "leatherman-${version}";
-  version = "1.7.0";
+  pname = "leatherman";
+  version = "1.7.1";
 
   src = fetchFromGitHub {
-    sha256 = "0n6vcbc43hdaxg5inl2b43bsksdkj3k0qxis6gkkclipivp8pz0p";
+    sha256 = "0m2dm1gzwj0kwyl031bif89h3n4znml3m5n97hywlbra58ni8km1";
     rev = version;
     repo = "leatherman";
     owner = "puppetlabs";
   };
 
-  buildInputs = [ boost cmake curl ruby ];
+  NIX_CFLAGS_COMPILE = [ "-Wno-error=ignored-qualifiers" "-Wno-error=class-memaccess" "-Wno-error=catch-value" ];
+
+  nativeBuildInputs = [ cmake ];
+  buildInputs = [ boost curl ruby ];
 
   enableParallelBuilding = true;
 
