@@ -1,0 +1,44 @@
+{ lib
+, pytest-dependency
+, buildPythonPackage
+, fetchPypi
+, setuptools_scm
+, tiledb
+, numpy
+, wheel
+}:
+
+buildPythonPackage rec {
+  pname = "tiledb";
+  version = "0.4.2";
+
+  src = fetchPypi {
+    inherit pname version;
+    sha256 = "bda0ef48e6a44c091399b12ab4a7e580d2dd8294c222b301f88d7d57f47ba142";
+  };
+
+  nativeBuildInputs = [
+    setuptools_scm
+    numpy
+    wheel
+    tiledb
+  ];
+
+  propagatedBuildInputs = [
+    pytest-dependency
+  ];
+
+# preInstall = ''setup.py build_exte'';
+#  checkInputs = [
+#    tiledb
+#  ];
+
+#  doCheck = false;
+
+  meta = with lib; {
+    description = "TileDB-Py is the official Python interface to TileDB";
+    homepage = https://github.com/TileDB-Inc/TileDB-Py;
+    license = licenses.mit;
+    maintainers = with maintainers; [ rakesh4g ];
+  };
+}

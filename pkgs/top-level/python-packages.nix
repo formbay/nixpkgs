@@ -6268,6 +6268,8 @@ in {
   runway-python = callPackage ../development/python-modules/runway-python { };
 
   pyprof2calltree = callPackage ../development/python-modules/pyprof2calltree { };
+  
+  tiledb = callPackage ../development/python-modules/tiledb { };
 });
 
 in fix' (extends overrides packages)
