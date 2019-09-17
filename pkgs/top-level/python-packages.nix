@@ -6269,7 +6269,7 @@ in {
 
   pyprof2calltree = callPackage ../development/python-modules/pyprof2calltree { };
   
-  tiledb = callPackage ../development/python-modules/tiledb { };
+  tiledbpy = callPackage ../development/python-modules/tiledbpy { };
 });
 
 in fix' (extends overrides packages)
