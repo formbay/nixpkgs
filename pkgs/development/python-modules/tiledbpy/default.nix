@@ -22,7 +22,7 @@ buildPythonPackage rec {
     owner = "TileDB-Inc";
     repo = "TileDB-Py";    
     rev = "0.4.3";   
-    sha256 = "sha256:0pg5cbqcvsxvr29wazc7zwvk8k07f2kj6nvvk572as93jm3jf9d1";
+    sha256 = "sha256:16hdz2d5d4llrq3l08a846yx4s71i780irhak041vjn1j1n3wmz6";
   };
 
   nativeBuildInputs = [
