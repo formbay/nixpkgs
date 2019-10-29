@@ -7397,4 +7397,9 @@
     githubId = 1986844;
     name = "Daniel Wheeler";
   };
+  rakesh4g = {
+    email = "rakeshgupta4u@gmail.com";
+    github = "Rakesh4G";
+    name = "Rakesh Gupta";
+  };
 }
